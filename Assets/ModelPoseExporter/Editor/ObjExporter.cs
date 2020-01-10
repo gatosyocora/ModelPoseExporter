@@ -19,7 +19,6 @@ public class ObjExporter
         foreach (Vector3 v in m.vertices)
         {
             // 左手座標から右手座標へ変換するためにx軸反転
-            // TODO: まだ微妙に位置が違う（Scaleをかけてないせい？）
             var v2 = meshTrans.localRotation * (v + Vector3.Scale(meshTrans.localPosition, meshTrans.localScale));
             sb.Append(string.Format("v {0} {1} {2}\n", -v2.x, v2.y, v2.z));
         }
