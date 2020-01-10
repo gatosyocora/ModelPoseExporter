@@ -1,2 +1,3 @@
 # ModelPoseExporter
  
+アニメーションされた3Dモデルを1フレームごとにobj形式で書き出すEditor拡張
