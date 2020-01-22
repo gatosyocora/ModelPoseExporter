@@ -19,13 +19,13 @@ public class ObjExporter
         foreach (Vector3 v in m.vertices)
         {
             // 左手座標から右手座標へ変換するためにx軸反転
-            var v2 = meshTrans.localRotation * (v + Vector3.Scale(meshTrans.localPosition, meshTrans.localScale));
+            var v2 = meshTrans.rotation * Vector3.Scale(v, meshTrans.localScale) + meshTrans.position;
             sb.Append(string.Format("v {0} {1} {2}\n", -v2.x, v2.y, v2.z));
         }
         sb.Append("\n");
         foreach (Vector3 v in m.normals)
         {
-            var v2 = meshTrans.localRotation * v;
+            var v2 = meshTrans.rotation * v;
             sb.Append(string.Format("vn {0} {1} {2}\n", v2.x, v2.y, v2.z));
         }
         sb.Append("\n");
