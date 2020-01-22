@@ -41,7 +41,7 @@ public class ModelPoseExporter : EditorWindow {
                 {
                     animators = GetActiveAnimators(animObject);
                     maxAnimationFrameNum = GetMaxFrameNum(animators);
-                    renderers = animObject.GetComponentsInChildren<SkinnedMeshRenderer>();
+                    renderers = animObject.GetComponentsInChildren<SkinnedMeshRenderer>(true);
                 }
             }
         }
@@ -245,6 +245,11 @@ public class ModelPoseExporter : EditorWindow {
         {
             foreach (var renderer in renderers)
             {
+                if (!renderer.gameObject.activeSelf)
+                {
+                    continue;
+                }
+
                 Mesh mesh = new Mesh();
                 renderer.BakeMesh(mesh);
 
@@ -272,6 +277,11 @@ public class ModelPoseExporter : EditorWindow {
         {
             foreach (var renderer in renderers)
             {
+                if (!renderer.gameObject.activeSelf)
+                {
+                    continue;
+                }
+
                 Mesh mesh = new Mesh();
                 renderer.BakeMesh(mesh);
                 var rendererObj = renderer.gameObject;
