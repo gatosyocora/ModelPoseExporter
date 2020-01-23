@@ -25,10 +25,10 @@ public class ObjExporter
             sb.Append(string.Format("v {0} {1} {2}\n", -wv.x, wv.y, wv.z));
         }
         sb.Append("\n");
-        foreach (Vector3 v in m.normals)
+        foreach (Vector3 n in m.normals)
         {
-            var v2 = local2WorldMat.MultiplyVector(v);
-            sb.Append(string.Format("vn {0} {1} {2}\n", v2.x, v2.y, v2.z));
+            var wn = local2WorldMat.MultiplyVector(n);
+            sb.Append(string.Format("vn {0} {1} {2}\n", wn.x, wn.y, wn.z));
         }
         sb.Append("\n");
         foreach (Vector3 v in m.uv)
