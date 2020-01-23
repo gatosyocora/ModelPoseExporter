@@ -11,6 +11,8 @@ public class ObjExporter
 
     public static string MeshToString(string meshName, Mesh m, Material[] mats, Transform meshTrans)
     {
+        var local2WorldMat = meshTrans.localToWorldMatrix;
+
         StringBuilder sb = new StringBuilder();
 
         sb.Append("mtllib ").Append(meshName+".mtl").Append("\n");
@@ -19,13 +21,13 @@ public class ObjExporter
         foreach (Vector3 v in m.vertices)
         {
             // 左手座標から右手座標へ変換するためにx軸反転
-            var v2 = meshTrans.rotation * Vector3.Scale(v, meshTrans.localScale) + meshTrans.position;
-            sb.Append(string.Format("v {0} {1} {2}\n", -v2.x, v2.y, v2.z));
+            var wv = local2WorldMat.MultiplyPoint(v);
+            sb.Append(string.Format("v {0} {1} {2}\n", -wv.x, wv.y, wv.z));
         }
         sb.Append("\n");
         foreach (Vector3 v in m.normals)
         {
-            var v2 = meshTrans.rotation * v;
+            var v2 = local2WorldMat.MultiplyVector(v);
             sb.Append(string.Format("vn {0} {1} {2}\n", v2.x, v2.y, v2.z));
         }
         sb.Append("\n");
