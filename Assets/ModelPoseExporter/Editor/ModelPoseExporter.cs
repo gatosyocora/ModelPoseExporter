@@ -195,9 +195,14 @@ public class ModelPoseExporter : EditorWindow {
             {
                 foreach (var renderer in renderers)
                 {
+                    var rendererObj = renderer.gameObject;
+                    if (!rendererObj.activeSelf)
+                    {
+                        continue;
+                    }
+
                     Mesh mesh = new Mesh();
                     renderer.BakeMesh(mesh);
-                    var rendererObj = renderer.gameObject;
                     string fileName = rendererObj.name + "_" + String.Format("{0:D" + frameMaxCountLength + "}", frameCount) + ".obj";
                     ExportObjFile(rendererObj.name, mesh, renderer.sharedMaterials, saveFolder, fileName, rendererObj.transform);
                 }
