@@ -3,6 +3,7 @@ using System.Collections;
 using System.IO;
 using System.Text;
 using UnityEditor;
+using System;
 
 // http://wiki.unity3d.com/index.php/ObjExporter
 
@@ -54,7 +55,9 @@ public class ObjExporter
 
     public static void MeshToFile(string meshName, Mesh m, Material[] mats, Transform meshTrans, string filename)
     {
-        using (StreamWriter sw = new StreamWriter(filename))
+        filename = GetUniqueFilePath(filename);
+
+        using (StreamWriter sw = new StreamWriter(filename, false))
         {
             sw.Write(MeshToString(meshName, m, mats, meshTrans));
         }
@@ -106,9 +109,33 @@ public class ObjExporter
 
         string fileData = sb.ToString();
 
-        using (StreamWriter sw = new StreamWriter(fileName))
+        using (StreamWriter sw = new StreamWriter(fileName, false))
         {
             sw.Write(fileData);
         }
+    }
+
+    private static string GetUniqueFilePath(string filePath)
+    {
+        if (!File.Exists(filePath))
+        {
+            return filePath;
+        }
+
+        var splitedFilePath = filePath.Split('.');
+        var filePathWithoutExtension = splitedFilePath[0];
+        var extension = splitedFilePath[1];
+
+        for (int i = 1; i <= 100; i++)
+        {
+            filePath = string.Format("{0} ({1}).{2}", filePathWithoutExtension, i, extension);
+
+            if (!File.Exists(filePath))
+            {
+                return filePath;
+            }
+        }
+
+        throw new Exception("同名のファイルが多すぎます");
     }
 }
